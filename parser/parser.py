@@ -70,8 +70,15 @@ class Parser:
     def get_new_reviews(self, store_url):
         # смотрим если есть капча значит произошел разлогин
         if self.__browser.find_elements(By.ID, "captcha-img"):
+            try:
+                
+                chat_id_in_env = config('CHATID')
+                chat_id_in_env_list = chat_id_in_env.split(',')
+                for ch in chat_id_in_env_list:
+                    requests.post(f'https://api.telegram.org/bot{api_token}/sendMessage', json={'chat_id': ch.strip(), 'text': 'Перезапустите парсер'})
+            except Exception as ex:
+                print(ex)
             self.__browser.close()
-
         # команда /stop в боте 
         func_req = func_requests_tg_api()
         if func_req == True:
@@ -98,6 +105,14 @@ class Parser:
         for good_url in goods_urls:
             # проверяем если есть капча произошел разлогин 
             if self.__browser.find_elements(By.ID, "captcha-img"):
+                try:
+                    
+                    chat_id_in_env = config('CHATID')
+                    chat_id_in_env_list = chat_id_in_env.split(',')
+                    for ch in chat_id_in_env_list:
+                        requests.post(f'https://api.telegram.org/bot{api_token}/sendMessage', json={'chat_id': ch.strip(), 'text': 'Перезапустите парсер'})
+                except Exception as ex:
+                    print(ex)
                 self.__browser.close()
 
             logger.info(f'Получение отзывов для товара с id {good_url.split("/")[-1]}')

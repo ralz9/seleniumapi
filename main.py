@@ -88,20 +88,24 @@ def update_reviews(_parser, chat_id, last_update_id):
         logger.debug(json.dumps(data_dict))
 
 # https://101.99.91.183/api/reviews/add/
-
+        
         resp = requests.post(config('APIURL'),
                             headers={'Content-type': 'application/json'}, json=json.dumps(data_dict),
                             data=json.dumps(data_dict),
                             verify=False)
+
+      
+
         logger.debug(f'Статус запросы: {resp.status_code}')
 
 
-
-        with open('store_urls.json', 'r') as f:
-            json_list = json.load(f)
-            json_list.remove(f'{store_url}')
-            with open('store_urls.json', 'w') as file_temporary:
-                json.dump(json_list, file_temporary)
+        if resp.status_code:
+            logger.debug(f'- 1 ссылка успешно ')
+            with open('store_urls.json', 'r') as f:
+                json_list = json.load(f)
+                json_list.remove(f'{store_url}')
+                with open('store_urls.json', 'w') as file_temporary:
+                    json.dump(json_list, file_temporary)
 
             
             

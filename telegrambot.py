@@ -20,7 +20,7 @@ text = None
 
 def check_new_messages():
     global  chat_id, text
-    text_start = 'Hello дял запуска /p'
+    
     text_p = 'Запуск парсера'
     last_update_id = None
 
@@ -48,6 +48,7 @@ def check_new_messages():
                         print(f"Received new message: '{text}' from chat_id: {chat_id}")
                         last_update_id = update['update_id'] + 1
                         if text == '/start':
+                            text_start = f'Hello дял запуска /p your chat_id: {chat_id}'
                             func_send_message(chat_id , text_start)
                             last_update_id = update['update_id'] + 1
                         elif text == '/p':
