@@ -47,8 +47,6 @@ def update_reviews(_parser, chat_id, last_update_id):
 
 
     for i, store_url in enumerate(stores_urls):
-      
-        # try:
         new_reviews = _parser.get_new_reviews(store_url)
         logger.info(new_reviews)
         logger.info(f'Было спаршено: {i} магазинов')
@@ -89,24 +87,29 @@ def update_reviews(_parser, chat_id, last_update_id):
         logger.info(data_dict)
         logger.debug(json.dumps(data_dict))
 
-        resp = requests.post('http://blackoctop.us/api/reviews/add/',
+# https://101.99.91.183/api/reviews/add/
+
+        resp = requests.post(config('APIURL'),
                             headers={'Content-type': 'application/json'}, json=json.dumps(data_dict),
-                            data=json.dumps(data_dict))
+                            data=json.dumps(data_dict),
+                            verify=False)
         logger.debug(f'Статус запросы: {resp.status_code}')
+
+
+
         with open('store_urls.json', 'r') as f:
             json_list = json.load(f)
             json_list.remove(f'{store_url}')
             with open('store_urls.json', 'w') as file_temporary:
                 json.dump(json_list, file_temporary)
-        # except Exception as ex:
-        #     print(ex)
+
             
             
 
-if __name__ == '__main__':
-    logger.add('logs.txt')
-    logger.info('Запуск парсера')
-    parser = Parser(waiting_time, small_waiting_time, login, password)
-    parser.login(last_update_id, chat_id)
-    while True:
-        update_reviews(parser)
+# if __name__ == '__main__':
+#     logger.add('logs.txt')
+#     logger.info('Запуск парсера')
+#     parser = Parser(waiting_time, small_waiting_time, login, password)
+#     parser.login(last_update_id, chat_id)
+#     while True:
+#         update_reviews(parser)

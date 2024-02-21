@@ -58,8 +58,10 @@ def check_new_messages():
                             parser = Parser(waiting_time, small_waiting_time, login, password)
                             last_update_id = update['update_id'] + 1
                             parser.login(last_update_id, chat_id)
+                            
                             while True:
                                 update_reviews(parser, last_update_id,  chat_id)
+                        
                         elif text == '/info':
                             func_send_message(chat_id , 'Парсер Не запущен!!!!!')
                         elif text == '/stop':
